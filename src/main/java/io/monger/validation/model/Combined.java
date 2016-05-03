@@ -1,12 +1,8 @@
-package io.monger.validation;
+package io.monger.validation.model;
 
-import io.monger.validation.resource.CombinedResource;
-import io.monger.validation.resource.DomainResource;
-import io.monger.validation.resource.IpAddressResource;
-import io.monger.validation.resource.PortResource;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
-import org.springframework.stereotype.Component;
+import io.monger.validation.validator.DomainName;
+import io.monger.validation.validator.IpAddress;
+import io.monger.validation.validator.Port;
 
 /*
  * Copyright (c) 2016 Phillip Babbitt
@@ -25,15 +21,46 @@ import org.springframework.stereotype.Component;
  */
 
 /**
- * Jersey Configuration
+ * Model that contains a domain name, IP address and network port.
  */
-@Component
-public class JerseyConfig extends ResourceConfig {
-    public JerseyConfig() {
-        register(CombinedResource.class);
-        register(DomainResource.class);
-        register(IpAddressResource.class);
-        register(PortResource.class);
-        property(ServerProperties.WADL_FEATURE_DISABLE, true);
+public class Combined {
+    private Integer id;
+    @DomainName
+    private String domainName;
+    @IpAddress
+    private String ipAddress;
+    @Port
+    private Integer port;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    public String getDomainName() {
+        return domainName;
+    }
+
+    public void setDomainName(final String domainName) {
+        this.domainName = domainName;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(final String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(final Integer port) {
+        this.port = port;
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus
 import spock.lang.Stepwise
 import spock.lang.Unroll
 
-/*/*
+/*
  * Copyright (c) 2016 Phillip Babbitt
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -36,13 +36,13 @@ class DomainResourceTest extends IntegrationBootstrap {
     @Test
     void 'test getting the domain name'() {
         when:
-        def result = template.exchange(
-                serviceURI(),
-                HttpMethod.GET,
-                null,
-                String.class)
+            def result = template.exchange(
+                    serviceURI(),
+                    HttpMethod.GET,
+                    null,
+                    String.class)
         then:
-        result.body == 'monger.io'
+            result.body == 'monger.io'
     }
 
     @Test @Unroll
