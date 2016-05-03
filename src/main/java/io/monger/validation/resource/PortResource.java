@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
  */
 
 /**
- * CRUD for network ports.
+ * Get/set network ports.
  */
 @Component
 @Path("/port")

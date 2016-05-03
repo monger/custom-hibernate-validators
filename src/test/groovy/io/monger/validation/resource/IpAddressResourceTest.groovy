@@ -25,17 +25,17 @@ import spock.lang.Unroll
  */
 
 /**
- * Tests the Port resource REST endpoints.
+ * Tests the IP Address resource REST endpoints.
  */
 @Stepwise
-class PortResourceTest extends IntegrationBootstrap {
+class IpAddressResourceTest extends IntegrationBootstrap {
 
     def getBasePath() {
-        'port'
+        'ipaddress'
     }
 
     @Test
-    void 'test getting the port number'() {
+    void 'test getting the IP address'() {
         when:
             def result = template.exchange(
                     serviceURI(),
@@ -43,16 +43,16 @@ class PortResourceTest extends IntegrationBootstrap {
                     null,
                     String.class)
         then:
-            result.body == '8080'
+            result.body == '127.0.0.1'
     }
 
     @Test @Unroll
-    void 'test setting valid port numbers'() {
+    void 'test setting valid IP addresses'() {
         when:
             def putResult = template.exchange(
                     serviceURI(),
                     HttpMethod.PUT,
-                    new HttpEntity<Object>(new Integer(_port).toString()),
+                    new HttpEntity<Object>(_ipAddress),
                     Void.class)
         and:
             def getResult = template.exchange(
@@ -61,49 +61,32 @@ class PortResourceTest extends IntegrationBootstrap {
                     null,
                     String.class)
         then:
-            putResult.statusCode == _status && getResult.body == Integer.toString(_port)
+            putResult.statusCode == _status && getResult.body == _ipAddress
         where:
-            _port || _status
-            1     || HttpStatus.NO_CONTENT
-            80    || HttpStatus.NO_CONTENT
-            443   || HttpStatus.NO_CONTENT
-            8080  || HttpStatus.NO_CONTENT
-            65535 || HttpStatus.NO_CONTENT
+            _ipAddress        || _status
+            '192.168.0.1'     || HttpStatus.NO_CONTENT
+            '4.4.4.4'         || HttpStatus.NO_CONTENT
+            '8.8.8.8'         || HttpStatus.NO_CONTENT
+            '255.255.255.255' || HttpStatus.NO_CONTENT
+            '1.1.1.1'         || HttpStatus.NO_CONTENT
     }
 
     @Test @Unroll
-    void 'test setting invalid port numbers'() {
+    void 'test setting invalid IP addresses'() {
         when:
             def result = template.exchange(
                     serviceURI(),
                     HttpMethod.PUT,
-                    new HttpEntity<Object>(new Integer(_port).toString()),
+                    new HttpEntity<Object>(_ipAddress),
                     Void.class
             )
         then:
             result.statusCode == _status
         where:
-            _port   || _status
-            0       || HttpStatus.NOT_FOUND
-            65536   || HttpStatus.NOT_FOUND
-            1000000 || HttpStatus.NOT_FOUND
-    }
-
-    @Test @Unroll
-    void 'test setting invalid port values'() {
-        when:
-            def result = template.exchange(
-                    serviceURI(),
-                    HttpMethod.PUT,
-                    new HttpEntity<Object>(_value),
-                    Void.class
-            )
-        then:
-            result.statusCode == _status
-        where:
-            _value               || _status
-            -1                   || HttpStatus.NOT_FOUND
-            'potato'             || HttpStatus.NOT_FOUND
-            Double.valueOf(80.5) || HttpStatus.NOT_FOUND
+            _ipAddress        || _status
+            '256.256.256.256' || HttpStatus.NOT_FOUND
+            '1000.50.86.8'    || HttpStatus.NOT_FOUND
+            '-1.1.1.1'        || HttpStatus.NOT_FOUND
+            'banana'          || HttpStatus.NOT_FOUND
     }
 }

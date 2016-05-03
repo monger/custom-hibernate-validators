@@ -1,10 +1,4 @@
-package io.monger.validation;
-
-import io.monger.validation.resource.IpAddressResource;
-import io.monger.validation.resource.PortResource;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
-import org.springframework.stereotype.Component;
+package io.monger.validation.resource;
 
 /*
  * Copyright (c) 2016 Phillip Babbitt
@@ -22,14 +16,35 @@ import org.springframework.stereotype.Component;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import io.monger.validation.validator.IpAddress;
+import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 /**
- * Jersey Configuration
+ * Get/set IP address.
  */
 @Component
-public class JerseyConfig extends ResourceConfig {
-    public JerseyConfig() {
-        register(IpAddressResource.class);
-        register(PortResource.class);
-        property(ServerProperties.WADL_FEATURE_DISABLE, true);
+@Path("/ipaddress")
+public class IpAddressResource {
+    private String ipAddress = "127.0.0.1";
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String get() {
+        return ipAddress;
+    }
+
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response put(final @IpAddress String ipAddress) {
+        this.ipAddress = ipAddress;
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

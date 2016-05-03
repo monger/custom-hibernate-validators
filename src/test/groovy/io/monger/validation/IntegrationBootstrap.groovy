@@ -6,8 +6,6 @@ import org.springframework.boot.test.TestRestTemplate
 import org.springframework.boot.test.WebIntegrationTest
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
-import spock.lang.Stepwise
-
 /*
  * Copyright (c) 2016 Phillip Babbitt
  *
@@ -29,7 +27,6 @@ import spock.lang.Stepwise
  */
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = App.class)
 @WebIntegrationTest(randomPort = true)
-@Stepwise
 class IntegrationBootstrap extends Specification {
 
     @Value('${local.server.port}')
