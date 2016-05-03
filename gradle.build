@@ -1,0 +1,52 @@
+group 'io.monger'
+version '1.0.0'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.3.0.RELEASE')
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    bootGrp = 'org.springframework.boot'
+    bootVer = '1.3.3.RELEASE'
+    groovyVersion = '2.4.6'
+}
+
+bootRun {
+    systemProperties = System.properties
+}
+
+dependencies {
+    compile "$bootGrp:spring-boot-starter-jersey:$bootVer"
+    compile "$bootGrp:spring-boot-starter-undertow:$bootVer"
+    compile "$bootGrp:spring-boot-starter-web:$bootVer"
+    compile "$bootGrp:spring-boot-starter-actuator:$bootVer"
+
+    testCompile "$bootGrp:spring-boot-starter-test:$bootVer"
+    testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'org.spockframework:spock-spring:1.0-groovy-2.3'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
+
