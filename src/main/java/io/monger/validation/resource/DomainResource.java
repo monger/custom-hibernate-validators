@@ -1,11 +1,15 @@
-package io.monger.validation;
+package io.monger.validation.resource;
 
-import io.monger.validation.resource.DomainResource;
-import io.monger.validation.resource.IpAddressResource;
-import io.monger.validation.resource.PortResource;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
+import io.monger.validation.validator.DomainName;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /*
  * Copyright (c) 2016 Phillip Babbitt
@@ -24,14 +28,23 @@ import org.springframework.stereotype.Component;
  */
 
 /**
- * Jersey Configuration
+ * Get/set domain names.
  */
 @Component
-public class JerseyConfig extends ResourceConfig {
-    public JerseyConfig() {
-        register(DomainResource.class);
-        register(IpAddressResource.class);
-        register(PortResource.class);
-        property(ServerProperties.WADL_FEATURE_DISABLE, true);
+@Path("/domainname")
+public class DomainResource {
+    private String domain = "monger.io";
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String get() {
+        return domain;
+    }
+
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response set(final @DomainName String domain) {
+        this.domain = domain;
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }
