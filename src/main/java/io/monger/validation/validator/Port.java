@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  */
 @Max(value = 65535)
 @Min(value = 1)
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
 @ReportAsSingleViolation

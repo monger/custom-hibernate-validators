@@ -1,14 +1,9 @@
-package io.monger.validation.validator;
+package io.monger.validation;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.Pattern;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.monger.validation.resource.PortResource;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
+import org.springframework.stereotype.Component;
 
 /*
  * Copyright (c) 2016 Phillip Babbitt
@@ -27,16 +22,12 @@ import java.lang.annotation.Target;
  */
 
 /**
- * Validates an IP address
+ * Jersey Configuration
  */
-@Pattern(regexp = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {})
-@ReportAsSingleViolation
-@Documented
-public @interface IpAddress {
-    String message() default "Invalid IP address.";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+@Component
+public class JerseyConfig extends ResourceConfig {
+    public JerseyConfig() {
+        register(PortResource.class);
+        property(ServerProperties.WADL_FEATURE_DISABLE, true);
+    }
 }

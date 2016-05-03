@@ -1,14 +1,8 @@
-package io.monger.validation.validator;
+package io.monger.validation;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.Pattern;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 /*
  * Copyright (c) 2016 Phillip Babbitt
@@ -27,16 +21,19 @@ import java.lang.annotation.Target;
  */
 
 /**
- * Validates an IP address
+ * Main App
  */
-@Pattern(regexp = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {})
-@ReportAsSingleViolation
-@Documented
-public @interface IpAddress {
-    String message() default "Invalid IP address.";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+@SpringBootApplication
+public class App extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
+        return application.sources(App.class);
+    }
+
+    public static void main(final String[] args) {
+        new App()
+                .configure(new SpringApplicationBuilder(App.class))
+                .run(args);
+    }
 }

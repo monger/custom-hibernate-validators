@@ -1,14 +1,15 @@
-package io.monger.validation.validator;
+package io.monger.validation.resource;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.Pattern;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.monger.validation.validator.Port;
+import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /*
  * Copyright (c) 2016 Phillip Babbitt
@@ -27,16 +28,23 @@ import java.lang.annotation.Target;
  */
 
 /**
- * Validates an IP address
+ * CRUD for network ports.
  */
-@Pattern(regexp = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {})
-@ReportAsSingleViolation
-@Documented
-public @interface IpAddress {
-    String message() default "Invalid IP address.";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+@Component
+@Path("/port")
+public class PortResource {
+    private Integer port = 8080;
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String get() {
+        return port.toString();
+    }
+
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response create(final @Port Integer port) {
+        this.port = port;
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
 }

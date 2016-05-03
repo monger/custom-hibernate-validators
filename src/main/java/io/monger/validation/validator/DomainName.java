@@ -2,6 +2,7 @@ package io.monger.validation.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Pattern;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -29,9 +30,10 @@ import java.lang.annotation.Target;
  * Validates a domain name.
  */
 @Pattern(regexp = "\\b((?=[a-z0-9-]{1,63}\\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\\.)+[a-z]{2,63}\\b")
-@Target( {ElementType.METHOD, ElementType.FIELD})
+@Target( {ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
+@ReportAsSingleViolation
 @Documented
 public @interface DomainName {
     String message() default "Invalid domain name.";
